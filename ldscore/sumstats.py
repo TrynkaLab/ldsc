@@ -125,6 +125,7 @@ def _read_w_ld(args, log):
             '--w-ld must point to a single fileset (no commas allowed).')
     w_ld = _read_chr_split_files(args.w_ld_chr, args.w_ld, log,
                                  'regression weight LD Score', ps.ldscore_fromlist)
+    #print(w_ld)
     if len(w_ld.columns) != 2:
         raise ValueError('--w-ld may only have one LD Score column.')
     w_ld.columns = ['SNP', 'LD_weights']  # prevent colname conflicts w/ ref ld

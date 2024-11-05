@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm, chi2
 from . import jackknife as jk
-from . import irwls as IRWLS
+from .irwls import IRWLS
 from scipy.stats import t as tdist
 from collections import namedtuple
 np.seterr(divide='raise', invalid='raise')

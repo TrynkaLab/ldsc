@@ -10,33 +10,35 @@ import numpy as np
 import pandas as pd
 import os
 import glob
-
+import gzip
 
 def series_eq(x, y):
     '''Compare series, return False if lengths not equal.'''
     return len(x) == len(y) and (x == y).all()
 
-
 def read_csv(fh, **kwargs):
-    return pd.read_csv(fh, delim_whitespace=True, na_values='.', **kwargs)
-
+    '''Read CSV file with optional compression handling.'''
+    if fh.endswith('.gz'):
+        with gzip.open(fh, 'rt') as f:
+            return pd.read_csv(f, delim_whitespace=True, na_values='.', **kwargs)
+    else:
+        return pd.read_csv(fh, delim_whitespace=True, na_values='.', **kwargs)
 
 def sub_chr(s, chrom):
     '''Substitute chr for @, else append chr to the end of str.'''
     if '@' not in s:
         s += '@'
-
     return s.replace('@', str(chrom))
-
 
 def get_present_chrs(fh, num):
     '''Checks which chromosomes exist, assuming that the file base will be appended by a dot in any suffix.'''
     chrs = []
+   # print(fh, num)
     for chrom in range(1, num):
+        #print((sub_chr(fh, chrom) + '.*'))
         if glob.glob(sub_chr(fh, chrom) + '.*'):
             chrs.append(chrom)
     return chrs
-
 
 def which_compression(fh):
     '''Given a file prefix, figure out what sort of compression to use.'''
@@ -54,7 +56,6 @@ def which_compression(fh):
 
     return suffix, compression
 
-
 def get_compression(fh):
     '''Which sort of compression should we use with read_csv?'''
     if fh.endswith('gz'):
@@ -66,7 +67,6 @@ def get_compression(fh):
 
     return compression
 
-
 def read_cts(fh, match_snps):
     '''Reads files for --cts-bin.'''
     compression = get_compression(fh)
@@ -75,7 +75,6 @@ def read_cts(fh, match_snps):
         raise ValueError('--cts-bin and the .bim file must have identical SNP columns.')
 
     return cts.ANNOT.values
-
 
 def sumstats(fh, alleles=False, dropna=True):
     '''Parses .sumstats files. See docs/file_formats_sumstats.txt.'''
@@ -95,7 +94,6 @@ def sumstats(fh, alleles=False, dropna=True):
 
     return x
 
-
 def ldscore_fromlist(flist, num=None):
     '''Sideways concatenation of a list of LD Score files.'''
     ldscore_array = []
@@ -113,7 +111,6 @@ def ldscore_fromlist(flist, num=None):
 
     return pd.concat(ldscore_array, axis=1)
 
-
 def l2_parser(fh, compression):
     '''Parse LD Score files'''
     x = read_csv(fh, header=0, compression=compression)
@@ -121,15 +118,13 @@ def l2_parser(fh, compression):
         x = x.drop(['MAF', 'CM'], axis=1)
     return x
 
-
 def annot_parser(fh, compression, frqfile_full=None, compression_frq=None):
     '''Parse annot files'''
-    df_annot = read_csv(fh, header=0, compression=compression).drop(['SNP','CHR', 'BP', 'CM'], axis=1, errors='ignore').astype(float)
+    df_annot = read_csv(fh, header=0, compression=compression).drop(['SNP', 'CHR', 'BP', 'CM'], axis=1, errors='ignore').astype(float)
     if frqfile_full is not None:
         df_frq = frq_parser(frqfile_full, compression_frq)
         df_annot = df_annot[(.95 > df_frq.FRQ) & (df_frq.FRQ > 0.05)]
     return df_annot
-
 
 def frq_parser(fh, compression):
     '''Parse frequency files.'''
@@ -138,12 +133,12 @@ def frq_parser(fh, compression):
         df.rename(columns={'MAF': 'FRQ'}, inplace=True)
     return df[['SNP', 'FRQ']]
 
-
 def ldscore(fh, num=None):
     '''Parse .l2.ldscore files, split across num chromosomes. See docs/file_formats_ld.txt.'''
-    suffix = '.l2.ldscore'
+    suffix = '.l2.ldscore.gz'
     if num is not None:  # num files, e.g., one per chromosome
         chrs = get_present_chrs(fh, num+1)
+        #print(num, chrs)
         first_fh = sub_chr(fh, chrs[0]) + suffix
         s, compression = which_compression(first_fh)
         chr_ld = [l2_parser(sub_chr(fh, i) + suffix + s, compression) for i in chrs]
@@ -155,6 +150,24 @@ def ldscore(fh, num=None):
     x = x.sort_values(by=['CHR', 'BP'])  # SEs will be wrong unless sorted
     x = x.drop(['CHR', 'BP'], axis=1).drop_duplicates(subset='SNP')
     return x
+
+def M(fh, num=None, N=2, common=False):
+    '''Parses .l{N}.M files, split across num chromosomes. See docs/file_formats_ld.txt.'''
+    parsefunc = lambda y: [float(z) for z in open(y, 'r').readline().split()]
+    suffix = '.l' + str(N) + '.M'
+    if common:
+        suffix += '_5_50'
+
+    if num is not None:
+        x = np.sum([parsefunc(sub_chr(fh, i) + suffix) for i in get_present_chrs(fh, num+1)], axis=0)
+    else:
+        x = parsefunc(fh + suffix)
+
+    return np.array(x).reshape((1, len(x)))
+
+def M_fromlist(flist, num=None, N=2, common=False):
+    '''Read a list of .M* files and concatenate sideways.'''
+    return np.hstack([M(fh, num, N, common) for fh in flist])
 
 
 def M(fh, num=None, N=2, common=False):
