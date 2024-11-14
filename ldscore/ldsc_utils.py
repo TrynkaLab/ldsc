@@ -82,10 +82,16 @@ def run_herit_command(sumstats_file, ld_scores_dir):
         base_name = os.path.splitext(os.path.basename(sumstats_file))[0]
         out_file = f"{base_name}.sumstats.gz"
         print("First command ################:")
+                # Ensure ld_scores_dir is in lowercase
+        ld_scores_dir = ld_scores_dir.lower()
+
+        # Ensure ld_scores_dir has a trailing slash
+        if not ld_scores_dir.endswith('/'):
+            ld_scores_dir += '/'
         # First command
         command1 = f"cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_file} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}"
         result1 = subprocess.run( ['bash', '-c', command1], check=True, capture_output=True, text=True)
-       
+ 
         # command1 = [
         #     'python', '../munge_sumstats.py',
         #     '--sumstats', sumstats_file,
