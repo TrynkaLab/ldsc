@@ -77,7 +77,7 @@ def run_herit_command(sumstats_file, ld_scores_dir):
     fileDir = f"/data/tmp/uploads"
     try:
         parent_dir = '/usr/local/bin/'
-        munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstat.py')
+        munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstats.py')
         # Generate the output filename based on the input summary statistics file
         base_name = os.path.splitext(os.path.basename(sumstats_file))[0]
         out_file = f"{base_name}.sumstats.gz"
