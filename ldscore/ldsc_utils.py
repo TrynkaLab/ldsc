@@ -5,9 +5,25 @@ import shutil
 
 
 
-def run_ldsc_command(pop, genome_build, filename):
+def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit):
     fileDir = f"/data/tmp/uploads"
     print(filename)
+    ldwindow_value = 1  # Example value, replace with actual value
+
+    # Check if ldwindow is an integer greater than 0, if not set it to 1
+    try:
+        ldwindow_value = int(ldwindow)
+        if ldwindow_value <= 0:
+            ldwindow_value = 1
+    except ValueError:
+        ldwindow_value = 1
+
+    windFlag = '--ld-wind-cm'
+    if windUnit == 'cm':
+        windFlag = "--ld-wind-cm"
+    elif windUnit == 'kb':
+        windFlag = "--ld-wind-kb"
+
     if filename:
         file_parts = filename.split('.')
         file_chromo = None
@@ -33,7 +49,7 @@ def run_ldsc_command(pop, genome_build, filename):
         parent_dir = '/usr/local/bin/'
         ldsc_script_path = os.path.join(parent_dir, 'ldsc.py')
         #print(ldsc_script_path)
-        command = f"cd {fileDir} && python3 {ldsc_script_path} --bfile {file_chromo} --l2 --ld-wind-cm 1 --out {file_chromo}"
+        command = f"cd {fileDir} && python3 {ldsc_script_path} --bfile {file_chromo} --l2 {windFlag} {ldwindow_value}  --out {file_chromo}"
         result = subprocess.run(
             ['bash', '-c', command],
             check=True,
