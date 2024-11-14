@@ -20,9 +20,9 @@ def read_csv(fh, **kwargs):
     '''Read CSV file with optional compression handling.'''
     if fh.endswith('.gz'):
         with gzip.open(fh, 'rt') as f:
-            return pd.read_csv(f, delim_whitespace=True, na_values='.', **kwargs)
+            return pd.read_csv(f,  sep='\s+', na_values='.', **kwargs)
     else:
-        return pd.read_csv(fh, delim_whitespace=True, na_values='.', **kwargs)
+        return pd.read_csv(fh,  sep='\s+', na_values='.', **kwargs)
 
 def sub_chr(s, chrom):
     '''Substitute chr for @, else append chr to the end of str.'''
@@ -276,7 +276,7 @@ def __ID_List_Factory__(colnames, keepcol, fname_end, header=None, usecols=None)
 
             comp = get_compression(fname)
             self.df = pd.read_csv(fname, header=self.__header__, usecols=self.__usecols__,
-                                  delim_whitespace=True, compression=comp)
+                                   sep='\s+', compression=comp)
 
             if self.__colnames__:
                 self.df.columns = self.__colnames__

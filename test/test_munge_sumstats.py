@@ -315,14 +315,14 @@ class test_end_to_end(unittest.TestCase):
     def test_basic(self):
         x = munge.munge_sumstats(self.args, p=False)
         correct = pd.read_csv(
-            'test/munge_test/correct.sumstats', delim_whitespace=True, header=0)
+            'test/munge_test/correct.sumstats',  sep='\s+', header=0)
         assert_frame_equal(x, correct)
 
     def test_merge_alleles(self):
         self.args.merge_alleles = 'test/munge_test/merge_alleles'
         x = munge.munge_sumstats(self.args, p=False)
         correct = pd.read_csv(
-            'test/munge_test/correct_merge.sumstats', delim_whitespace=True, header=0)
+            'test/munge_test/correct_merge.sumstats',  sep='\s+', header=0)
         assert_frame_equal(x, correct)
 
     def test_bad_merge_alleles(self):

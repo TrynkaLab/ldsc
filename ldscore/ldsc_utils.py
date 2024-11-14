@@ -84,30 +84,36 @@ def run_herit_command(sumstats_file, ld_scores_dir):
         print("First command ################:")
         # First command
         command1 = f"cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_file} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}"
+        result1 = subprocess.run( ['bash', '-c', command1], check=True, capture_output=True, text=True)
+       
         # command1 = [
-        #     'python', 'munge_sumstats.py',
+        #     'python', '../munge_sumstats.py',
         #     '--sumstats', sumstats_file,
-        #     '--merge-alleles', 'testData/w_hm3.snplist',
+        #     '--merge-alleles', '../testData/w_hm3.snplist',
         #     '--a1', 'ALT',
         #     '--a2', 'REF',
         #     '--chunksize', '500000',
         #     '--out', base_name
         # ]
-        result1 = subprocess.run( ['bash', '-c', command1], check=True, capture_output=True, text=True)
+        #result1 = subprocess.run( command1, check=True, capture_output=True, text=True)
+       
         print("First command output:", result1.stdout)
         #print("First command error (if any):", result1.stderr)
 
         # Second command
         ldsc_script_path = os.path.join(parent_dir, 'ldsc.py')
         command2 = f"cd {fileDir} && python3 {ldsc_script_path} --h2 {out_file} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}"
+        result2 = subprocess.run( ['bash', '-c', command2], check=True, capture_output=True, text=True)
+      
         # command2 = [
-        #     'python', 'ldsc.py',
-        #     '--h2', out_file,
+        #     'python', '../ldsc.py',
+        #     '--h2', "test2.sumstats.gz",
         #     '--ref-ld-chr', ld_scores_dir,
         #     '--w-ld-chr', ld_scores_dir,
         #     '--out', base_name
         # ]
-        result2 = subprocess.run( ['bash', '-c', command2], check=True, capture_output=True, text=True)
+        # result2 = subprocess.run( command2, check=True, capture_output=True, text=True)
+       
         print("Second command output:", result2.stdout)
         return result2.stdout
         #print("Second command error (if any):", result2.stderr)
@@ -119,6 +125,6 @@ def run_herit_command(sumstats_file, ld_scores_dir):
 
 # Example usage
 if __name__ == "__main__":
-    user_input_sumstats = 'testData/sample/BBJ_HDLC.txt'  # Replace with actual user input
-    user_input_ld_scores = 'testData/eas/'  # Replace with actual user input
+    user_input_sumstats = '../testData/sample/BBJ_HDLC.txt'  # Replace with actual user input
+    user_input_ld_scores = '../testData/eas/'  # Replace with actual user input
     run_herit_command(user_input_sumstats, user_input_ld_scores)
