@@ -93,7 +93,7 @@ def run_herit_command(sumstats_file, ld_scores_dir):
         #     '--chunksize', '500000',
         #     '--out', base_name
         # ]
-        result1 = subprocess.run(command1, check=True, capture_output=True, text=True)
+        result1 = subprocess.run( ['bash', '-c', command1], check=True, capture_output=True, text=True)
         print("First command output:", result1.stdout)
         #print("First command error (if any):", result1.stderr)
 
@@ -107,7 +107,7 @@ def run_herit_command(sumstats_file, ld_scores_dir):
         #     '--w-ld-chr', ld_scores_dir,
         #     '--out', base_name
         # ]
-        result2 = subprocess.run(command2, check=True, capture_output=True, text=True)
+        result2 = subprocess.run( ['bash', '-c', command2], check=True, capture_output=True, text=True)
         print("Second command output:", result2.stdout)
         return result2.stdout
         #print("Second command error (if any):", result2.stderr)
