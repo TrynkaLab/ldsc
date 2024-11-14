@@ -73,3 +73,47 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit):
 
 #if __name__ == "__main__":
 #    main()
+
+def run_herit_command(sumstats_file, ld_scores_dir):
+    try:
+        # Generate the output filename based on the input summary statistics file
+        base_name = os.path.splitext(os.path.basename(sumstats_file))[0]
+        out_file = f"{base_name}.sumstats.gz"
+
+        # First command
+        command1 = [
+            'python', 'munge_sumstats.py',
+            '--sumstats', sumstats_file,
+            '--merge-alleles', 'testData/w_hm3.snplist',
+            '--a1', 'ALT',
+            '--a2', 'REF',
+            '--chunksize', '500000',
+            '--out', base_name
+        ]
+        result1 = subprocess.run(command1, check=True, capture_output=True, text=True)
+        print("First command output:", result1.stdout)
+        #print("First command error (if any):", result1.stderr)
+
+        # Second command
+        command2 = [
+            'python', 'ldsc.py',
+            '--h2', out_file,
+            '--ref-ld-chr', ld_scores_dir,
+            '--w-ld-chr', ld_scores_dir,
+            '--out', base_name
+        ]
+        result2 = subprocess.run(command2, check=True, capture_output=True, text=True)
+        print("Second command output:", result2.stdout)
+        return result2.stdout
+        #print("Second command error (if any):", result2.stderr)
+
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while running the command: {e}")
+        print(f"Command output: {e.output}")
+        print(f"Command stderr: {e.stderr}")
+
+# Example usage
+if __name__ == "__main__":
+    user_input_sumstats = 'testData/sample/BBJ_HDLC.txt'  # Replace with actual user input
+    user_input_ld_scores = 'testData/eas/'  # Replace with actual user input
+    run_herit_command(user_input_sumstats, user_input_ld_scores)

@@ -1,0 +1,32 @@
+python munge_sumstats.py --sumstats testData/pgc.scz22.2012-04.txt --N 31800 --out scz --merge-alleles testData/w_hm3.snplist
+
+python munge_sumstats.py --sumstats testData/pgc.bip22.2012-04.txt --N 31800 --out bip --merge-alleles testData/w_hm3.snplist
+
+//got error
+python ldsc.py --rg scz.sumstats.gz,bip.sumstats.gz --ref-ld-chr testData/baselineLD_v2.2 --w-ld-chr testData/baselineLD_v2.2 --out scz_bip
+//ldscore Char
+python ldsc.py --h2 scz.sumstats.gz --ref-ld-chr testData/baselineLD_v2.2/ --w-ld-chr testData/baselineLD_v2.2/ --out scz_h2
+//ldscore from example = IRWLS(
+python ldsc.py --h2 scz.sumstats.gz --ref-ld-chr testData/eur_w_ld_chr/ --w-ld-chr testData/eur_w_ld_chr/ --out scz_h2
+//
+
+
+python munge_sumstats.py --sumstats testData/pgc.scz22.2012-04.txt --N 31800 --out scz --merge-alleles testData/w_hm3.snplist
+python munge_sumstats.py --sumstats testData/pgc.bip22.2012-04.txt --N 31800 --out bip --merge-alleles testData/w_hm3.snplist
+
+python ldsc.py --rg scz.sumstats.gz,bip.sumstats.gz --ref-ld-chr testData/eur_w_ld_chr/ --w-ld-chr testData/eur_w_ld_chr/ --out scz_bip
+python ldsc.py --h2 scz.sumstats.gz --ref-ld-chr testData/eur_w_ld_chr/ --w-ld-chr testData/eur_w_ld_chr/ --out scz_h2
+
+
+python munge_sumstats.py --sumstats testData/sumstats.txt --out test --N=71797 --merge-alleles testData/w_hm3.snplist
+python ldsc.py --h2 test.sumstats.gz --ref-ld-chr eur_w_ld_chr/ --w-ld-chr eur_w_ld_chr/ --out test.dbgap
+
+
+
+python munge_sumstats.py --sumstats testData/sample/BBJ_HDLC.txt --merge-alleles testData/w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out BBJ_HDLC
+python munge_sumstats.py --sumstats testData/sample/BBJ_LDLC.txt --merge-alleles testData/w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out BBJ_LDLC
+
+python ldsc.py --h2  BBJ_HDLC.sumstats.gz --ref-ld-chr testData/sample/eas_ldscores/ --w-ld-chr testData/sample/eas_ldscores/ --out BBJ_HDLC
+python ldsc.py --h2  BBJ_LDLC.sumstats.gz --ref-ld-chr testData/sample/eas_ldscores/ --w-ld-chr testData/sample/eas_ldscores/ --out BBJ_LDLC
+
+python ldsc.py --rg BBJ_HDLC.sumstats.gz,BBJ_LDLC.sumstats.gz --ref-ld-chr testData/sample/eas_ldscores/ --w-ld-chr testData/sample/eas_ldscores/ --out BBJ_HDLC_LDLC
