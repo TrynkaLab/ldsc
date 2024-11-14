@@ -83,7 +83,7 @@ def run_herit_command(sumstats_file, ld_scores_dir):
         out_file = f"{base_name}.sumstats.gz"
         print("First command ################:")
         # First command
-        command1 = f'cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_file} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}'
+        command1 = f"cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_file} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}"
         # command1 = [
         #     'python', 'munge_sumstats.py',
         #     '--sumstats', sumstats_file,
@@ -99,7 +99,7 @@ def run_herit_command(sumstats_file, ld_scores_dir):
 
         # Second command
         ldsc_script_path = os.path.join(parent_dir, 'ldsc.py')
-        command2 = f'cd {fileDir} && python3 {ldsc_script_path} --h2 {out_file} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}'
+        command2 = f"cd {fileDir} && python3 {ldsc_script_path} --h2 {out_file} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}"
         # command2 = [
         #     'python', 'ldsc.py',
         #     '--h2', out_file,
