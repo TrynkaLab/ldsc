@@ -80,9 +80,9 @@ def run_herit_command(sumstats_file, ld_scores_dir):
         # Generate the output filename based on the input summary statistics file
         base_name = os.path.splitext(os.path.basename(sumstats_file))[0]
         out_file = f"{base_name}.sumstats.gz"
-
+        print("First command ################:")
         # First command
-        command1 = f'cd {fileDir} && python3 munge_sumstats.py --sumstats {sumstats_file} --merge-alleles testData/w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}'
+        command1 = f'cd {fileDir} && python3 munge_sumstats.py --sumstats {sumstats_file} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}'
         # command1 = [
         #     'python', 'munge_sumstats.py',
         #     '--sumstats', sumstats_file,
