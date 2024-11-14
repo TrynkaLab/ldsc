@@ -45,7 +45,6 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit):
     try:
         # Run the command
         # 'cd 1kg_eur && python ../ldsc.py --bfile 22 --l2 --ld-wind-cm 1 --out 22'
-        script_dir = os.path.dirname(os.path.abspath(__file__))
         parent_dir = '/usr/local/bin/'
         ldsc_script_path = os.path.join(parent_dir, 'ldsc.py')
         #print(ldsc_script_path)
@@ -77,12 +76,14 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit):
 def run_herit_command(sumstats_file, ld_scores_dir):
     fileDir = f"/data/tmp/uploads"
     try:
+        parent_dir = '/usr/local/bin/'
+        munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstat.py')
         # Generate the output filename based on the input summary statistics file
         base_name = os.path.splitext(os.path.basename(sumstats_file))[0]
         out_file = f"{base_name}.sumstats.gz"
         print("First command ################:")
         # First command
-        command1 = f'cd {fileDir} && python3 munge_sumstats.py --sumstats {sumstats_file} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}'
+        command1 = f'cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_file} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}'
         # command1 = [
         #     'python', 'munge_sumstats.py',
         #     '--sumstats', sumstats_file,
@@ -97,7 +98,8 @@ def run_herit_command(sumstats_file, ld_scores_dir):
         #print("First command error (if any):", result1.stderr)
 
         # Second command
-        command2 = f'cd {fileDir} && python3 ldsc.py --h2 {out_file} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}'
+        ldsc_script_path = os.path.join(parent_dir, 'ldsc.py')
+        command2 = f'cd {fileDir} && python3 {ldsc_script_path} --h2 {out_file} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}'
         # command2 = [
         #     'python', 'ldsc.py',
         #     '--h2', out_file,
