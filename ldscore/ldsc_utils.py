@@ -121,7 +121,8 @@ def run_herit_command(sumstats_file, ld_scores_dir):
         # result2 = subprocess.run( command2, check=True, capture_output=True, text=True)
        
         print("Second command output:", result2.stdout)
-        return result1.stdout + result2.stdout
+        separator = "\n---\n"
+        return result1.stdout + separator + result2.stdout
         #print("Second command error (if any):", result2.stderr)
 
     except subprocess.CalledProcessError as e:
