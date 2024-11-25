@@ -7,6 +7,7 @@ import shutil
 
 def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
     fileDir = f"/data/tmp/uploads"
+    isExample = isExample.lower() == 'true'
     if isExample:
         fileDir =  "/data/ldscore"
     ldwindow_value = 1  # Example value, replace with actual value
@@ -76,15 +77,22 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
 
 def run_herit_command(sumstats_file, ld_scores_dir,isExample):
     fileDir = f"/data/tmp/uploads"
-    if isExample:
-        fileDir =  "/data/ldscore"
+    fallExampleDir = "/data/ldscore"
+    isExample = isExample.lower() == 'true'
+   
     try:
         parent_dir = '/usr/local/bin/'
         munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstats.py')
         # Generate the output filename based on the input summary statistics file
         base_name = os.path.splitext(os.path.basename(sumstats_file))[0]
         out_file = f"{base_name}.sumstats.gz"
-        print("First command ################:")
+       
+                # If isExample is True, use the fallbackDir
+        if isExample:
+            sumstats_path = os.path.join(fallExampleDir, sumstats_file)
+        else:
+            sumstats_path = sumstats_file
+        print("First command ################:",sumstats_path)
                 # Ensure ld_scores_dir is in lowercase
         ld_scores_dir = ld_scores_dir.lower()
 
@@ -92,7 +100,7 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         if not ld_scores_dir.endswith('/'):
             ld_scores_dir += '/'
         # First command
-        command1 = f"cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_file} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}"
+        command1 = f"cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_path} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}"
         result1 = subprocess.run( ['bash', '-c', command1], check=True, capture_output=True, text=True)
  
         # command1 = [
