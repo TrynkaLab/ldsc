@@ -7,7 +7,8 @@ import shutil
 
 def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
     fileDir = f"/data/tmp/uploads"
-    isExample = isExample.lower() == 'true'
+    if isinstance(isExample, str):
+            isExample = isExample.lower() == 'true'
     if isExample:
         fileDir =  "/data/ldscore"
     ldwindow_value = 1  # Example value, replace with actual value
@@ -78,8 +79,8 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
 def run_herit_command(sumstats_file, ld_scores_dir,isExample):
     fileDir = f"/data/tmp/uploads"
     fallExampleDir = "/data/ldscore"
-    isExample = isExample.lower() == 'true'
-   
+    if isinstance(isExample, str):
+        isExample = isExample.lower() == 'true'   
     try:
         parent_dir = '/usr/local/bin/'
         munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstats.py')
