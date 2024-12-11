@@ -94,7 +94,7 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
             sumstats_path = os.path.join(fallExampleDir, sumstats_file)
         else:
             sumstats_path = sumstats_file
-        print("First command ################:",sumstats_path)
+        print("First command ################:",sumstats_path, isExample)
                 # Ensure ld_scores_dir is in lowercase
         ld_scores_dir = ld_scores_dir.lower()
 
