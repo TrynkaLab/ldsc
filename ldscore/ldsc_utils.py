@@ -79,6 +79,7 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
 def run_herit_command(sumstats_file, ld_scores_dir,isExample):
     fileDir = f"/data/tmp/uploads"
     fallExampleDir = "/data/ldscore"
+    w_hm3_snplist = "/data/ldscore/w_hm3.snplist"
     if isinstance(isExample, str):
         isExample = isExample.lower() == 'true'   
     try:
@@ -101,7 +102,10 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         if not ld_scores_dir.endswith('/'):
             ld_scores_dir += '/'
         # First command
-        command1 = f"cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_path} --merge-alleles w_hm3.snplist --a1 ALT --a2 REF --chunksize 500000 --out {base_name}"
+        command1 = f"cd {fileDir} && python3 {munge_sumstat_script_path} --sumstats {sumstats_path} --merge-alleles {w_hm3_snplist}  --out {base_name}"
+        
+        #command1 = f"python ../munge_sumstats.py --sumstats {sumstats_path} --merge-alleles ../testData/w_hm3.snplist  --out {base_name}"
+      
         result1 = subprocess.run( ['bash', '-c', command1], check=True, capture_output=True, text=True)
  
         # command1 = [
@@ -146,4 +150,4 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
 if __name__ == "__main__":
     user_input_sumstats = '../testData/sample/BBJ_HDLC.txt'  # Replace with actual user input
     user_input_ld_scores = '../testData/eas/'  # Replace with actual user input
-    run_herit_command(user_input_sumstats, user_input_ld_scores)
+    run_herit_command(user_input_sumstats, user_input_ld_scores,False)
