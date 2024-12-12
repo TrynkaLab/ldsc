@@ -97,7 +97,7 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         print("First command ################:",sumstats_path, isExample)
                 # Ensure ld_scores_dir is in lowercase
         ld_scores_dir = ld_scores_dir.lower()
-
+        ld_scores_dir = fallExampleDir+"/"+ld_scores_dir
         # Ensure ld_scores_dir has a trailing slash
         if not ld_scores_dir.endswith('/'):
             ld_scores_dir += '/'
