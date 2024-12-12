@@ -9,8 +9,8 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
     fileDir = f"/data/tmp/uploads"
     if isinstance(isExample, str):
             isExample = isExample.lower() == 'true'
-    if isExample:
-        fileDir =  "/data/ldscore"
+    #if isExample:
+    #    fileDir =  "/data/ldscore"
     ldwindow_value = 1  # Example value, replace with actual value
 
     # Check if ldwindow is an integer greater than 0, if not set it to 1
@@ -44,7 +44,8 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
             new_file_path = os.path.join(fileDir, new_filename)
             #os.rename(file_path, new_file_path)
             shutil.copy(file_path, new_file_path)  # Copy the file instead of renaming it
-        
+    if isExample:
+        file_chromo =  "/data/ldscore/"+file_chromo    
     try:
         # Run the command
         # 'cd 1kg_eur && python ../ldsc.py --bfile 22 --l2 --ld-wind-cm 1 --out 22'
