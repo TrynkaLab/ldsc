@@ -642,7 +642,7 @@ def munge_sumstats(args, p=True):
                     'Reading list of SNPs for allele merge from {F}'.format(F=args.merge_alleles))
                 (openfunc, compression) = get_compression(args.merge_alleles)
                 merge_alleles = pd.read_csv(args.merge_alleles, compression=compression, header=0,
-                                            sep='\s+', na_values='.')
+                                            sep=r'\s+', na_values='.')
                 if any(x not in merge_alleles.columns for x in ["SNP", "A1", "A2"]):
                     raise ValueError(
                         '--merge-alleles must have columns SNP, A1, A2.')
@@ -661,7 +661,7 @@ def munge_sumstats(args, p=True):
             # figure out which columns are going to involve sign information, so we can ensure
             # they're read as floats
             signed_sumstat_cols = [k for k,v in cname_translation.items() if v=='SIGNED_SUMSTAT']
-            dat_gen = pd.read_csv(args.sumstats, sep='\s+', header=0,
+            dat_gen = pd.read_csv(args.sumstats, sep=r'\s+', header=0,
                     compression=compression, usecols=cname_translation.keys(),
                     na_values=['.', 'NA'], iterator=True, chunksize=args.chunksize,
                     dtype={c:np.float64 for c in signed_sumstat_cols})
