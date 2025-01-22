@@ -127,7 +127,9 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
 
         # Second command
         ldsc_script_path = os.path.join(parent_dir, 'ldsc.py')
+        print("Second command ################:",ld_scores_dir)
         command2 = f"cd {fileDir} && python3 {ldsc_script_path} --h2 {out_file} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}"
+        print("Second command ################:",command2)
         result2 = subprocess.run( ['bash', '-c', command2], check=True, capture_output=True, text=True)
       
         # command2 = [
@@ -140,7 +142,7 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         # result2 = subprocess.run( command2, check=True, capture_output=True, text=True)
        
         print("Second command output:", result2.stdout)
-        separator = "\n---\n"
+        separator = "\n--------\n"
         return result1.stdout + separator + result2.stdout
         #print("Second command error (if any):", result2.stderr)
 
