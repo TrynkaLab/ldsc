@@ -131,7 +131,7 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         command2 = f"cd {fileDir} && python3 {ldsc_script_path} --h2 {out_file} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}"
        
         result2 = subprocess.run( ['bash', '-c', command2], check=True, capture_output=True, text=True)
-        return ("Second command error ################:",result2.stderr)
+        #return ("Second command error ################:",result2.stderr)
         # command2 = [
         #     'python', '../ldsc.py',
         #     '--h2', "test2.sumstats.gz",
