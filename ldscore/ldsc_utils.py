@@ -81,10 +81,11 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
 
 def run_herit_command(sumstats_file, ld_scores_dir,isExample):
     fileDir = f"/data/tmp/uploads"
-    fallExampleDir = "/data/ldscore"
-    w_hm3_snplist = "/data/ldscore/w_hm3.snplist"
+    fallExampleDir = f"/data/ldscore"
+    w_hm3_snplist = f"/data/ldscore/w_hm3.snplist"
     if isinstance(isExample, str):
-        isExample = isExample.lower() == 'true'   
+        isExample = isExample.lower() == 'true'  
+    errormsg ="" 
     try:
         parent_dir = '/usr/local/bin/'
         munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstats.py')
@@ -110,7 +111,7 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         #command1 = f"python ../munge_sumstats.py --sumstats {sumstats_path} --merge-alleles ../testData/w_hm3.snplist  --out {base_name}"
       
         result1 = subprocess.run( ['bash', '-c', command1], check=True, capture_output=True, text=True)
- 
+       
         # command1 = [
         #     'python', '../munge_sumstats.py',
         #     '--sumstats', sumstats_file,
@@ -130,8 +131,18 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         print("Second command ################:",ld_scores_dir)
         command2 = f"cd {fileDir} && python3 {ldsc_script_path} --h2 {out_file} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}"
        
-        result2 = subprocess.run( ['bash', '-c', command2], check=True, capture_output=True, text=True)
-        #return ("Second command error ################:",result2.stderr)
+        #result2 = subprocess.run( ['bash', '-c', command2], check=True, capture_output=True, text=True)
+        try:
+            result2 = subprocess.run(['bash', '-c', command2], check=True, capture_output=True, text=True)
+            print("Second command output:", result2.stdout)
+            separator = "\n--------\n"
+            return result1.stdout + separator + result2.stdout
+        except subprocess.CalledProcessError as e:
+            print(f"An error occurred while running the second command: {e}")
+            print(f"Command output: {e.output}")
+            print(f"Command stderr: {e.stderr}")
+            return f"An error occurred while running the second command: {e.stderr}"
+
         # command2 = [
         #     'python', '../ldsc.py',
         #     '--h2', "test2.sumstats.gz",
@@ -141,15 +152,16 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         # ]
         # result2 = subprocess.run( command2, check=True, capture_output=True, text=True)
        
-        print("Second command output:", result2.stdout)
-        separator = "\n--------\n"
-        return result1.stdout + separator + result2.stdout
+        #print("Second command output:", result2.stdout)
+        #separator = "\n--------\n"
+        #return result1.stdout + separator + errormsg
         #print("Second command error (if any):", result2.stderr)
 
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while running the command: {e}")
         print(f"Command output: {e.output}")
         print(f"Command stderr: {e.stderr}")
+        return f"An error occurred while running the command: {e.stderr}"
 
 # Example usage
 if __name__ == "__main__":
