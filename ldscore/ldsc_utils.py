@@ -141,7 +141,7 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
             print(f"An error occurred while running the second command: {e}")
             print(f"Command output: {e.output}")
             print(f"Command stderr: {e.stderr}")
-            return f"An error occurred while running the second command: {e.stderr}"
+            return f"{result1.stdout} An error occurred while running the second command: {e.stderr}"
 
         # command2 = [
         #     'python', '../ldsc.py',
