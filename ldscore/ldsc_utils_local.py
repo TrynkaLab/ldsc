@@ -90,7 +90,7 @@ def run_herit_command(sumstats_file, ld_scores_dir, isExample):
     errormsg = ""
     
     try:
-        parent_dir = os.path.abspath('/')
+        parent_dir = os.path.abspath('../')
         munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstats.py')
         
         # Generate the output filename based on the input summary statistics file
@@ -144,7 +144,7 @@ def run_herit_command(sumstats_file, ld_scores_dir, isExample):
 # Example usage
 if __name__ == "__main__":
     print("Current working directory:", os.getcwd())
-    user_input_sumstats = os.path.abspath('../testData/sample/BBJ_HDLC.txt')  # Replace with actual user input
+    user_input_sumstats = os.path.abspath('../testData/sample/BBJ_HDLC22.txt')  # Replace with actual user input
     user_input_ld_scores = os.path.abspath('../testData/afr/')  # Replace with actual user input
     combined_output = run_herit_command(user_input_sumstats, user_input_ld_scores, False)
     print("Combined output:")
