@@ -142,9 +142,11 @@ def run_herit_command(sumstats_file, ld_scores_dir, isExample):
         return f"An error occurred while running the command: {e.stderr}"
 
 # Example usage
+# conda activate ldsc39
+# python ldscore/ldsc_utils_local.py
 if __name__ == "__main__":
     print("Current working directory:", os.getcwd())
-    user_input_sumstats = os.path.abspath('../testData/sample/BBJ_HDLC22.txt')  # Replace with actual user input
+    user_input_sumstats = os.path.abspath('../testData/sample/BBJ_HDLC.txt')  # Replace with actual user input
     user_input_ld_scores = os.path.abspath('../testData/afr/')  # Replace with actual user input
     combined_output = run_herit_command(user_input_sumstats, user_input_ld_scores, False)
     print("Combined output:")
