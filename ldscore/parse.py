@@ -18,6 +18,7 @@ def series_eq(x, y):
 
 def read_csv(fh, **kwargs):
     '''Read CSV file with optional compression handling.'''
+    print(fh)
     if fh.endswith('.gz'):
         try:
             with gzip.open(fh, 'rt') as f:
