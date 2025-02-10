@@ -29,7 +29,11 @@ def read_csv(fh, **kwargs):
                 except Exception as e:
                     print(f"An error occurred while reading the gzip file {fh}: {e}")
                     return (f"An error occurred while reading the gzip file {fh}: {e}")
-                return pd.read_csv(f,  sep='\s+', na_values='.', **kwargs)
+                try:
+                    return pd.read_csv(f, sep=r'\s+', na_values='.', **kwargs)
+                except Exception as e:
+                    print(f"An error occurred while reading the file {fh} with pandas: {e}")
+                    return (f"An error occurred while reading the file {fh} with pandas: {e}")
         except Exception as e:
             print(f"An error occurred while reading the file {fh}: {e}")
             return None
