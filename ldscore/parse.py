@@ -22,17 +22,9 @@ def read_csv(fh, **kwargs):
     if fh.endswith('.gz'):
         try:
             f = gzip.open(fh, 'rt')
-            #with gzip.open(fh, 'rt') as f:
-            #print(f"Type of f: {type(f)}")       # Try reading a small portion of the file to ensure it is opened correctly
-            try:
-                fline = f.read(1)
-                f.seek(0)  # Reset the file pointer to the beginning
-                #print(fline)
-            except Exception as e:
-                print(f"An error occurred while reading the gzip file {fh}: {e}")
-                return (f"An error occurred while reading the gzip file {fh}: {e}")
             try:
                 df = pd.read_csv(f,  sep='\s+', na_values='.', **kwargs)
+                print(df.iloc[0])
                 return df
             except Exception as e:
                 print(f"An error occurred while reading the file {fh} with pandas: {e}")
