@@ -18,10 +18,17 @@ def series_eq(x, y):
 
 def read_csv(fh, **kwargs):
     '''Read CSV file with optional compression handling.'''
-    print(fh)
+    #print(fh)
     if fh.endswith('.gz'):
         try:
             with gzip.open(fh, 'rt') as f:
+                   # Try reading a small portion of the file to ensure it is opened correctly
+                try:
+                    f.read(1)
+                    f.seek(0)  # Reset the file pointer to the beginning
+                except Exception as e:
+                    print(f"An error occurred while reading the gzip file {fh}: {e}")
+                    return (f"An error occurred while reading the gzip file {fh}: {e}")
                 return pd.read_csv(f,  sep='\s+', na_values='.', **kwargs)
         except Exception as e:
             print(f"An error occurred while reading the file {fh}: {e}")
