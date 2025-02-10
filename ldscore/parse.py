@@ -21,19 +21,22 @@ def read_csv(fh, **kwargs):
     #print(fh)
     if fh.endswith('.gz'):
         try:
-            with gzip.open(fh, 'rt') as f:
-                   # Try reading a small portion of the file to ensure it is opened correctly
-                try:
-                    f.read(1)
-                    f.seek(0)  # Reset the file pointer to the beginning
-                except Exception as e:
-                    print(f"An error occurred while reading the gzip file {fh}: {e}")
-                    return (f"An error occurred while reading the gzip file {fh}: {e}")
-                try:
-                    return pd.read_csv(f, sep=r'\s+', na_values='.', **kwargs)
-                except Exception as e:
-                    print(f"An error occurred while reading the file {fh} with pandas: {e}")
-                    return (f"An error occurred while reading the file {fh} with pandas: {e}")
+            f = gzip.open(fh, 'rt')
+            #with gzip.open(fh, 'rt') as f:
+            #print(f"Type of f: {type(f)}")       # Try reading a small portion of the file to ensure it is opened correctly
+            try:
+                fline = f.read(1)
+                f.seek(0)  # Reset the file pointer to the beginning
+                #print(fline)
+            except Exception as e:
+                print(f"An error occurred while reading the gzip file {fh}: {e}")
+                return (f"An error occurred while reading the gzip file {fh}: {e}")
+            try:
+                df = pd.read_csv(f,  sep='\s+', na_values='.', **kwargs)
+                return df
+            except Exception as e:
+                print(f"An error occurred while reading the file {fh} with pandas: {e}")
+                return (f"An error occurred while reading the file {fh} with pandas: {e}")
         except Exception as e:
             print(f"An error occurred while reading the file {fh}: {e}")
             return None
