@@ -18,10 +18,11 @@ def series_eq(x, y):
 
 def read_csv(fh, **kwargs):
     '''Read CSV file with optional compression handling.'''
-    #print(fh)
+    print(fh)
     if fh.endswith('.gz'):
         try:
             f = gzip.open(fh, 'rt')
+            print(f)
             try:
                 df = pd.read_csv(f,  sep='\s+', na_values='.', **kwargs)
                 print(df.iloc[0])
