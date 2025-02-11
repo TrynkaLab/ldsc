@@ -146,6 +146,7 @@ def _read_chr_split_files(chr_arg, not_chr_arg, log, noun, parsefunc, **kwargs):
             out = parsefunc(_splitp(chr_arg), _N_CHR, **kwargs)
     except ValueError as e:
         log.log('Error parsing {N}.'.format(N=noun))
+        return e
         raise e
 
     return out

@@ -166,5 +166,5 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
 # Example usage
 if __name__ == "__main__":
     user_input_sumstats = '../testData/sample/BBJ_HDLC.txt'  # Replace with actual user input
-    user_input_ld_scores = '../testData/eas/'  # Replace with actual user input
+    user_input_ld_scores = '../testData/seu/'  # Replace with actual user input
     run_herit_command(user_input_sumstats, user_input_ld_scores,False)
