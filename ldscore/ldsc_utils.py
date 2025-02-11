@@ -138,10 +138,10 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
             separator = "\n--------\n"
             return result1.stdout + separator + result2.stdout
         except subprocess.CalledProcessError as e:
-            print(f"An error occurred while running the second command: {e}")
-            print(f"Command output: {e.output}")
+            print(f"An error occurred while running the second command: {e},{result2.stderr},{result2.stdout}")
+            print(f"Command output: {result2.output}")
             print(f"Command stderr: {e.stderr}")
-            return f"{result1.stdout} An error occurred while running the second command: {e.stderr}"
+            return f"{result1.stdout} An error occurred while running the second command: {e.stderr},{result2.stderr},{result2.stdout}"
 
         # command2 = [
         #     'python', '../ldsc.py',

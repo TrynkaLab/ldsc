@@ -31,7 +31,7 @@ def read_csv(fh, **kwargs):
                     df = pd.read_csv(f, sep=r'\s+', na_values='.', **kwargs)
                     if any("compression has no effect" in str(warning.message) for warning in w):
                         print(f"RuntimeWarning: compression has no effect when passing a non-binary object as input for file {fh}")
-                        return (f"An error occurred while reading the file {fh} with pandas: {e}")
+                        #return (f"An error occurred while reading the file {fh} with pandas: {e}")
                 print(f"DataFrame shape: {df.shape}")  # Print the shape of the DataFrame
                 return df
          
