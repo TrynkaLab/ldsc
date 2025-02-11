@@ -11,6 +11,7 @@ import pandas as pd
 import os
 import glob
 import gzip
+import warnings
 
 def series_eq(x, y):
     '''Compare series, return False if lengths not equal.'''
@@ -23,23 +24,17 @@ def read_csv(fh, **kwargs):
         try:
             f = gzip.open(fh, 'rt')
             print(f)
+           
             try:
-                sample = f.read(1)
-                print(f"Sample read from file: {sample}")  # Print the sample read
-                f.seek(0)  # Reset the file pointer to the beginning
-            except Exception as e:
-                print(f"An error occurred while reading the gzip file {fh}: {e}")
-                data = {
-                    'CHR': [1, 1, 1],
-                    'BP': [13417, 14464, 51479],
-                    'SNP': ['rs1207054048', 'rs546169444', 'rs116400033'],
-                    'L2': [0.7543, 1.5652, 2.8565]
-                }
-                df = pd.DataFrame(data)
+                with warnings.catch_warnings(record=True) as w:
+                    warnings.simplefilter("always")
+                    df = pd.read_csv(f, sep=r'\s+', na_values='.', **kwargs)
+                    if any("compression has no effect" in str(warning.message) for warning in w):
+                        print(f"RuntimeWarning: compression has no effect when passing a non-binary object as input for file {fh}")
+                        return (f"An error occurred while reading the file {fh} with pandas: {e}")
+                print(f"DataFrame shape: {df.shape}")  # Print the shape of the DataFrame
                 return df
-            try:
-                df = pd.read_csv(f,  sep='\s+', na_values='.', **kwargs)
-                return df
+         
             except Exception as e:
                 print(f"An error occurred while reading the file {fh} with pandas: {e}")
                 return (f"An error occurred while reading the file {fh} with pandas: {e}")
