@@ -141,13 +141,88 @@ def run_herit_command(sumstats_file, ld_scores_dir, isExample):
         print(f"Command stderr: {e.stderr}")
         return f"An error occurred while running the command: {e.stderr}"
 
+
+def run_correlation_command(sumstats_file,sumstats_file2, ld_scores_dir, isExample):
+    fileDir = os.path.abspath("../data/tmp/uploads")
+    fallExampleDir = os.path.abspath("../data/ldscore")
+    w_hm3_snplist = os.path.abspath("../testData/w_hm3.snplist")
+    
+    if isinstance(isExample, str):
+        isExample = isExample.lower() == 'true'
+    
+    errormsg = ""
+    
+    try:
+        parent_dir = os.path.abspath('../')
+        munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstats.py')
+        
+        # Generate the output filename based on the input summary statistics file
+        base_name = os.path.splitext(os.path.basename(sumstats_file))[0]
+        out_file = f"{base_name}.sumstats.gz"
+
+        base_name2 = os.path.splitext(os.path.basename(sumstats_file2))[0]
+        out_file2 = f"{base_name2}.sumstats.gz"
+        
+        # If isExample is True, use the fallbackDir
+        if isExample:
+            sumstats_path = os.path.join(fallExampleDir, sumstats_file)
+            sumstats_path2 = os.path.join(fallExampleDir, sumstats_file2)
+        else:
+            sumstats_path = os.path.abspath(sumstats_file)
+            sumstats_path2 = os.path.abspath(sumstats_file2)
+        
+        print("First command ################:", sumstats_path, isExample)
+        
+        # Ensure ld_scores_dir is in lowercase
+        ld_scores_dir = ld_scores_dir.lower()
+        ld_scores_dir = os.path.join(fallExampleDir, ld_scores_dir)
+        
+        # Ensure ld_scores_dir has a trailing slash
+        if not ld_scores_dir.endswith('/'):
+            ld_scores_dir += '/'
+        
+        # First command
+        command1 = f"cd {fileDir} && python {munge_sumstat_script_path} --sumstats {sumstats_path} --merge-alleles {w_hm3_snplist} --out {base_name}"
+        command12 = f"cd {fileDir} && python {munge_sumstat_script_path} --sumstats {sumstats_path2} --merge-alleles {w_hm3_snplist} --out {base_name2}"
+ 
+        result1 = subprocess.run(['bash', '-c', command1], check=True, capture_output=True, text=True)
+        result12 = subprocess.run(['bash', '-c', command12], check=True, capture_output=True, text=True)
+        
+        print("First command output:", result1.stdout)
+        print("First command error (if any):", result1.stderr)
+        
+        # Second command
+        ldsc_script_path = os.path.join(parent_dir, 'ldsc.py')
+        command2 = f"cd {fileDir} && python {ldsc_script_path} --rg {out_file},{out_file2} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}"
+        
+        try:
+            result2 = subprocess.run(['bash', '-c', command2], check=True, capture_output=True, text=True)
+            print("Second command output:", result2.stdout)
+            separator = "\n--------\n"
+            return result1.stdout + separator + result2.stdout
+        except subprocess.CalledProcessError as e:
+            print(f"An error occurred while running the second command: {e}")
+            print(f"Command output: {e.output}")
+            print(f"Command stderr: {e.stderr}")
+            return f"An error occurred while running the second command: {e.stderr}"
+    
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while running the command: {e}")
+        print(f"Command output: {e.output}")
+        print(f"Command stderr: {e.stderr}")
+        return f"An error occurred while running the command: {e.stderr}"
+
 # Example usage
 # conda activate ldsc39
-# python ldscore/ldsc_utils_local.py
+# python ldsc_utils_local.py
 if __name__ == "__main__":
     print("Current working directory:", os.getcwd())
     user_input_sumstats = os.path.abspath('../testData/sample/BBJ_HDLC.txt')  # Replace with actual user input
+    user_input_sumstats2 = os.path.abspath('../testData/sample/BBJ_LDLC.txt')  # Replace with actual user input
+    
     user_input_ld_scores = os.path.abspath('../testData/eur/')  # Replace with actual user input
-    combined_output = run_herit_command(user_input_sumstats, user_input_ld_scores, False)
+    #combined_output = run_herit_command(user_input_sumstats, user_input_ld_scores, False)
+    combined_output = run_correlation_command(user_input_sumstats, user_input_sumstats2,user_input_ld_scores, True)
+   
     print("Combined output:")
     print(combined_output)
