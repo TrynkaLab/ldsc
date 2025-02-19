@@ -223,20 +223,6 @@ def run_correlation_command(sumstats_file,sumstats_file2, ld_scores_dir,isExampl
             print(f"Command stderr: {e.stderr}")
             return f"{result1.stdout} An error occurred while running the second command: {e.stderr},{result2.stderr},{result2.stdout}"
 
-        # command2 = [
-        #     'python', '../ldsc.py',
-        #     '--h2', "test2.sumstats.gz",
-        #     '--ref-ld-chr', ld_scores_dir,
-        #     '--w-ld-chr', ld_scores_dir,
-        #     '--out', base_name
-        # ]
-        # result2 = subprocess.run( command2, check=True, capture_output=True, text=True)
-       
-        #print("Second command output:", result2.stdout)
-        #separator = "\n--------\n"
-        #return result1.stdout + separator + errormsg
-        #print("Second command error (if any):", result2.stderr)
-
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while running the command: {e}")
         print(f"Command output: {e.output}")
