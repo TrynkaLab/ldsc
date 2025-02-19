@@ -216,7 +216,8 @@ def run_correlation_command(sumstats_file,sumstats_file2, ld_scores_dir,isExampl
             result2 = subprocess.run(['bash', '-c', command2], check=True, capture_output=True, text=True)
             print("Second command output:", result2.stdout)
             separator = "\n--------\n"
-            return result1.stdout + separator + result2.stdout
+            #return result1.stdout + separator + result12.stdout + separator + result2.stdout
+            return result2.stdout
         except subprocess.CalledProcessError as e:
             print(f"An error occurred while running the second command: {e},{result2.stderr},{result2.stdout}")
             print(f"Command output: {result2.output}")

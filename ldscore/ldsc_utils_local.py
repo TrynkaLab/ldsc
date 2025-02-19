@@ -199,7 +199,7 @@ def run_correlation_command(sumstats_file,sumstats_file2, ld_scores_dir, isExamp
             result2 = subprocess.run(['bash', '-c', command2], check=True, capture_output=True, text=True)
             print("Second command output:", result2.stdout)
             separator = "\n--------\n"
-            return result1.stdout + separator + result2.stdout
+            return result1.stdout + separator + result12.stdout + separator + result2.stdout
         except subprocess.CalledProcessError as e:
             print(f"An error occurred while running the second command: {e}")
             print(f"Command output: {e.output}")
@@ -217,8 +217,8 @@ def run_correlation_command(sumstats_file,sumstats_file2, ld_scores_dir, isExamp
 # python ldsc_utils_local.py
 if __name__ == "__main__":
     print("Current working directory:", os.getcwd())
-    user_input_sumstats = os.path.abspath('../testData/sample/BBJ_HDLC.txt')  # Replace with actual user input
-    user_input_sumstats2 = os.path.abspath('../testData/sample/BBJ_LDLC.txt')  # Replace with actual user input
+    user_input_sumstats = os.path.abspath('../testData/sample/BBJ_HDLC22.txt')  # Replace with actual user input
+    user_input_sumstats2 = os.path.abspath('../testData/sample/BBJ_LDLC22.txt')  # Replace with actual user input
     
     user_input_ld_scores = os.path.abspath('../testData/eur/')  # Replace with actual user input
     #combined_output = run_herit_command(user_input_sumstats, user_input_ld_scores, False)
