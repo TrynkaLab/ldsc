@@ -197,7 +197,7 @@ def run_correlation_command(sumstats_file,sumstats_file2, ld_scores_dir, isExamp
         
         try:
             result2 = subprocess.run(['bash', '-c', command2], check=True, capture_output=True, text=True)
-            print("Second command output:", result2.stdout)
+            print("Second command output:", result2.stdout, result2.stderr)
             separator = "\n--------\n"
             return result1.stdout + separator + result12.stdout + separator + result2.stdout
         except subprocess.CalledProcessError as e:
@@ -220,7 +220,7 @@ if __name__ == "__main__":
     user_input_sumstats = os.path.abspath('../testData/sample/BBJ_HDLC22.txt')  # Replace with actual user input
     user_input_sumstats2 = os.path.abspath('../testData/sample/BBJ_LDLC22.txt')  # Replace with actual user input
     
-    user_input_ld_scores = os.path.abspath('../testData/eur/')  # Replace with actual user input
+    user_input_ld_scores = os.path.abspath('../testData/afr/')  # Replace with actual user input
     #combined_output = run_herit_command(user_input_sumstats, user_input_ld_scores, False)
     combined_output = run_correlation_command(user_input_sumstats, user_input_sumstats2,user_input_ld_scores, True)
    
