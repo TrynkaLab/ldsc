@@ -138,10 +138,8 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
             separator = "\n--------\n"
             return result1.stdout + separator + result2.stdout
         except subprocess.CalledProcessError as e:
-            print(f"An error occurred while running the second command: {e},{result2.stderr},{result2.stdout}")
-            print(f"Command output: {result2.output}")
-            print(f"Command stderr: {e.stderr}")
-            return f"{result1.stdout} An error occurred while running the second command: {e.stderr},{result2.stderr},{result2.stdout}"
+            print(f"An error occurred while running the second command: {e}")
+            return f"{result1.stdout} An error occurred while running the second command: {e.stderr}"
 
         # command2 = [
         #     'python', '../ldsc.py',
@@ -212,23 +210,21 @@ def run_correlation_command(sumstats_file,sumstats_file2, ld_scores_dir,isExampl
         command2 = f"cd {fileDir} && python3 {ldsc_script_path} --rg {out_file},{out_file2} --ref-ld-chr {ld_scores_dir} --w-ld-chr {ld_scores_dir} --out {base_name}"
        
         #result2 = subprocess.run( ['bash', '-c', command2], check=True, capture_output=True, text=True)
+
         try:
             result2 = subprocess.run(['bash', '-c', command2], check=True, capture_output=True, text=True)
             print("Second command output:", result2.stdout)
             separator = "\n--------\n"
-            #return result1.stdout + separator + result12.stdout + separator + result2.stdout
-            return result2.stdout
+            return result1.stdout + separator + result12.stdout + separator + result2.stdout
+            #return result2.stdout
         except subprocess.CalledProcessError as e:
-            print(f"An error occurred while running the second command: {e},{result2.stderr},{result2.stdout}")
-            print(f"Command output: {result2.output}")
-            print(f"Command stderr: {e.stderr}")
-            return f"{result1.stdout} An error occurred while running the second command: {e.stderr},{result2.stderr},{result2.stdout}"
+            print(f"An error occurred while running the second command: {e}")        
+            print(f"Command stderr: {e}")
+            return f"An error occurred while running the second command: {e}"
 
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while running the command: {e}")
-        print(f"Command output: {e.output}")
-        print(f"Command stderr: {e.stderr}")
-        return f"An error occurred while running the command: {e.stderr}"
+        return f"An error occurred while running the command: {e}"
 
 
 # Example usage
