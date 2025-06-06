@@ -5,8 +5,8 @@ import shutil
 
 
 
-def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
-    fileDir = f"/data/tmp/uploads"
+def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample,reference):
+    fileDir = f"/data/tmp/uploads/{reference}"
     if isinstance(isExample, str):
             isExample = isExample.lower() == 'true'
     #if isExample:
