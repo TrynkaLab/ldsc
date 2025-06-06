@@ -9,11 +9,11 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample,ref
     fileDir = f"/data/tmp/uploads/"
     if isinstance(isExample, str):
             isExample = isExample.lower() == 'true'
-            fileDir = f"/data/tmp/uploads/{reference}/"
+  
+    
     #if isExample:
     #    fileDir =  "/data/ldscore"
     ldwindow_value = 1  # Example value, replace with actual value
-    print(fileDir)
     # Check if ldwindow is an integer greater than 0, if not set it to 1
     try:
         ldwindow_value = int(ldwindow)
@@ -48,7 +48,9 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample,ref
     
     file_chr=file_chromo
     if isExample:
-        file_chr =  "/data/ldscore/"+file_chromo    
+        file_chr =  "/data/ldscore/"+file_chromo 
+    else:
+        fileDir = f"/data/tmp/uploads/{reference}/"   
     try:
         # Run the command
         # 'cd 1kg_eur && python ../ldsc.py --bfile 22 --l2 --ld-wind-cm 1 --out 22'
