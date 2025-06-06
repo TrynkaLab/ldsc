@@ -35,15 +35,15 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample):
                 file_chromo = part
                 break
     
-    if file_chromo:
-        # Find the file in the directory
-        pattern = os.path.join(fileDir, f"{filename}.*")
-        for file_path in glob.glob(pattern):
-            extension = file_path.split('.')[-1]
-            new_filename = f"{file_chromo}.{extension}"
-            new_file_path = os.path.join(fileDir, new_filename)
-            #os.rename(file_path, new_file_path)
-            shutil.copy(file_path, new_file_path)  # Copy the file instead of renaming it
+    # if file_chromo:
+    #     # Find the file in the directory
+    #     pattern = os.path.join(fileDir, f"{filename}.*")
+    #     for file_path in glob.glob(pattern):
+    #         extension = file_path.split('.')[-1]
+    #         new_filename = f"{file_chromo}.{extension}"
+    #         new_file_path = os.path.join(fileDir, new_filename)
+    #         #os.rename(file_path, new_file_path)
+    #         shutil.copy(file_path, new_file_path)  # Copy the file instead of renaming it
     
     file_chr=file_chromo
     if isExample:
