@@ -6,13 +6,14 @@ import shutil
 
 
 def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample,reference):
-    fileDir = f"/data/tmp/uploads/{reference}"
+    fileDir = f"/data/tmp/uploads/"
     if isinstance(isExample, str):
             isExample = isExample.lower() == 'true'
+            fileDir = f"/data/tmp/uploads/{reference}/"
     #if isExample:
     #    fileDir =  "/data/ldscore"
     ldwindow_value = 1  # Example value, replace with actual value
-
+    print(fileDir)
     # Check if ldwindow is an integer greater than 0, if not set it to 1
     try:
         ldwindow_value = int(ldwindow)
@@ -53,7 +54,7 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample,ref
         # 'cd 1kg_eur && python ../ldsc.py --bfile 22 --l2 --ld-wind-cm 1 --out 22'
         parent_dir = '/usr/local/bin/'
         ldsc_script_path = os.path.join(parent_dir, 'ldsc.py')
-        #print(ldsc_script_path)
+        print(fileDir)
         command = f"cd {fileDir} && python3 {ldsc_script_path} --bfile {file_chr} --l2 {windFlag} {ldwindow_value}  --out {file_chromo}"
         result = subprocess.run(
             ['bash', '-c', command],
