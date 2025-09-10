@@ -163,7 +163,7 @@ def run_herit_command(sumstats_file, fileDir, ld_scores_dir,isExample):
         print(f"Command stderr: {e.stderr}")
         return f"An error occurred while running the command: {e.stderr}"
 
-def run_correlation_command(sumstats_file,sumstats_file2, fileDir, ld_scores_dir,isExample):
+def run_correlation_command(sumstats_file, sumstats_file2, fileDir, ld_scores_dir,isExample):
     fallExampleDir = f"/data/ldscore"
     w_hm3_snplist = f"/data/ldscore/w_hm3.snplist"
     if isinstance(isExample, str):
