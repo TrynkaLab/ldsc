@@ -82,13 +82,12 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample,ref
 #if __name__ == "__main__":
 #    main()
 
-def run_herit_command(sumstats_file, ld_scores_dir,isExample):
-    fileDir = f"/data/tmp/uploads"
+def run_herit_command(sumstats_file, fileDir, ld_scores_dir,isExample):
     fallExampleDir = f"/data/ldscore"
     w_hm3_snplist = f"/data/ldscore/w_hm3.snplist"
     if isinstance(isExample, str):
-        isExample = isExample.lower() == 'true'  
-    errormsg ="" 
+        isExample = isExample.lower() == 'true'
+    errormsg = ""
     try:
         parent_dir = '/usr/local/bin/'
         munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstats.py')
@@ -164,13 +163,12 @@ def run_herit_command(sumstats_file, ld_scores_dir,isExample):
         print(f"Command stderr: {e.stderr}")
         return f"An error occurred while running the command: {e.stderr}"
 
-def run_correlation_command(sumstats_file,sumstats_file2, ld_scores_dir,isExample):
-    fileDir = f"/data/tmp/uploads"
+def run_correlation_command(sumstats_file,sumstats_file2, fileDir, ld_scores_dir,isExample):
     fallExampleDir = f"/data/ldscore"
     w_hm3_snplist = f"/data/ldscore/w_hm3.snplist"
     if isinstance(isExample, str):
-        isExample = isExample.lower() == 'true'  
-    errormsg ="" 
+        isExample = isExample.lower() == 'true'
+    errormsg = ""
     try:
         parent_dir = '/usr/local/bin/'
         munge_sumstat_script_path = os.path.join(parent_dir, 'munge_sumstats.py')
