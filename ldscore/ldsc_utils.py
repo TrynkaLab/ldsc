@@ -49,6 +49,7 @@ def run_ldsc_command(pop, genome_build, filename,ldwindow,windUnit,isExample,ref
     file_chr=file_chromo
     if isExample:
         file_chr =  "/data/ldscore/"+file_chromo 
+        fileDir = f"/data/tmp/uploads/{reference}/"  
     else:
         fileDir = f"/data/tmp/uploads/{reference}/"   
     try:
