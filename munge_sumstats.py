@@ -579,35 +579,35 @@ def munge_sumstats(args, p=True):
             cname_map[dan_cas] = 'N_CAS'
             cname_map[dan_con] = 'N_CON'
 
-            cname_translation = {x: cname_map[clean_header(x)] for x in file_cnames if
-                                clean_header(x) in cname_map}  # note keys not cleaned
-            cname_description = {
-                x: describe_cname[cname_translation[x]] for x in cname_translation}
-            if args.signed_sumstats is None and not args.a1_inc:
-                sign_cnames = [
-                    x for x in cname_translation if cname_translation[x] in null_values]
-                if len(sign_cnames) > 1:
-                    raise ValueError(
-                        'Too many signed sumstat columns. Specify which to ignore with the --ignore flag.')
-                if len(sign_cnames) == 0:
-                    raise ValueError(
-                        'Could not find a signed summary statistic column.')
+        cname_translation = {x: cname_map[clean_header(x)] for x in file_cnames if
+                            clean_header(x) in cname_map}  # note keys not cleaned
+        print(cname_translation)   
+        cname_description = {
+            x: describe_cname[cname_translation[x]] for x in cname_translation}
+        if args.signed_sumstats is None and not args.a1_inc:
+            sign_cnames = [
+                x for x in cname_translation if cname_translation[x] in null_values]
+            if len(sign_cnames) > 1:
+                raise ValueError(
+                    'Too many signed sumstat columns. Specify which to ignore with the --ignore flag.')
+            if len(sign_cnames) == 0:
+                raise ValueError(
+                    'Could not find a signed summary statistic column.')
 
-                sign_cname = sign_cnames[0]
-                signed_sumstat_null = null_values[cname_translation[sign_cname]]
-                cname_translation[sign_cname] = 'SIGNED_SUMSTAT'
-            else:
-                sign_cname = 'SIGNED_SUMSTATS'
+            sign_cname = sign_cnames[0]
+            signed_sumstat_null = null_values[cname_translation[sign_cname]]
+            cname_translation[sign_cname] = 'SIGNED_SUMSTAT'
+        else:
+            sign_cname = 'SIGNED_SUMSTATS'
+        # check that we have all the columns we need
+        if not args.a1_inc:
+            req_cols = ['SNP', 'P', 'SIGNED_SUMSTAT']
+        else:
+            req_cols = ['SNP', 'P']
 
-            # check that we have all the columns we need
-            if not args.a1_inc:
-                req_cols = ['SNP', 'P', 'SIGNED_SUMSTAT']
-            else:
-                req_cols = ['SNP', 'P']
-
-            for c in req_cols:
-                if c not in cname_translation.values():
-                    raise ValueError('Could not find {C} column.'.format(C=c))
+        for c in req_cols:
+            if c not in cname_translation.values():
+                raise ValueError('Could not find {C} column.'.format(C=c))
 
             # check aren't any duplicated column names in mapping
         for field in cname_translation:
@@ -642,7 +642,7 @@ def munge_sumstats(args, p=True):
                     'Reading list of SNPs for allele merge from {F}'.format(F=args.merge_alleles))
                 (openfunc, compression) = get_compression(args.merge_alleles)
                 merge_alleles = pd.read_csv(args.merge_alleles, compression=compression, header=0,
-                                            delim_whitespace=True, na_values='.')
+                                            sep=r'\s+', na_values='.')
                 if any(x not in merge_alleles.columns for x in ["SNP", "A1", "A2"]):
                     raise ValueError(
                         '--merge-alleles must have columns SNP, A1, A2.')
@@ -661,7 +661,7 @@ def munge_sumstats(args, p=True):
             # figure out which columns are going to involve sign information, so we can ensure
             # they're read as floats
             signed_sumstat_cols = [k for k,v in cname_translation.items() if v=='SIGNED_SUMSTAT']
-            dat_gen = pd.read_csv(args.sumstats, delim_whitespace=True, header=0,
+            dat_gen = pd.read_csv(args.sumstats, sep=r'\s+', header=0,
                     compression=compression, usecols=cname_translation.keys(),
                     na_values=['.', 'NA'], iterator=True, chunksize=args.chunksize,
                     dtype={c:np.float64 for c in signed_sumstat_cols})

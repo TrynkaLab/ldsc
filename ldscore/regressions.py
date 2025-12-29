@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm, chi2
 from . import jackknife as jk
-from . import irwls as IRWLS
+from .irwls import IRWLS
 from scipy.stats import t as tdist
 from collections import namedtuple
 np.seterr(divide='raise', invalid='raise')
@@ -701,8 +701,10 @@ class RG(object):
         else:
             rg_ratio = np.array(
                 gencov.tot / np.sqrt(hsq1.tot * hsq2.tot)).reshape((1, 1))
-            denom_delete_values = np.sqrt(
-                np.multiply(hsq1.tot_delete_values, hsq2.tot_delete_values))
+            #denom_delete_values = np.sqrt(np.multiply(hsq1.tot_delete_values, hsq2.tot_delete_values))
+            with np.errstate(invalid='ignore'):
+                denom_delete_values = np.sqrt(np.multiply(hsq1.tot_delete_values, hsq2.tot_delete_values))
+            
             rg = jk.RatioJackknife(
                 rg_ratio, gencov.tot_delete_values, denom_delete_values)
             self.rg_jknife = float(rg.jknife_est)

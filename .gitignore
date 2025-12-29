@@ -21,6 +21,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+testData/sample/
+
 
 # Installer logs
 pip-log.txt
@@ -87,6 +89,7 @@ docs/_build/
 
 # vscode
 .vscode/
+
 testData/
 data/
 testData/.DS_Store
