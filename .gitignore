@@ -87,3 +87,7 @@ docs/_build/
 
 # vscode
 .vscode/
+testData/
+data/
+testData/.DS_Store
+.DS_Store
