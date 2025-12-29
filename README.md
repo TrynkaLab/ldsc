@@ -13,10 +13,10 @@ Ensure you have the following installed on your system:
  
 ## 2. Clone the Repository
  
-Clone the main from the CBIIT GitHub repository:
+Clone the specific branch (ldsc39) from the CBIIT GitHub repository:
  
 ```
-git clone -b main https://github.com/CBIIT/ldsc.git
+git clone -b ldsc39 https://github.com/CBIIT/ldsc.git
 cd ldsc
 ```
  
@@ -84,10 +84,10 @@ From the project root directory (where the dockerfile is located):
  
 Clone the Repository
  
-**1. Clone the main branch from the CBIIT GitHub repository and build the image:**
+**1. Clone the the specific branch (ldsc39) from the CBIIT GitHub repository and build the image:**
  
 ```bash
-git clone -b main https://github.com/CBIIT/ldsc.git
+git clone -b ldsc39 https://github.com/CBIIT/ldsc.git
 cd ldsc
 docker build -t ldsc39 .
 ```
