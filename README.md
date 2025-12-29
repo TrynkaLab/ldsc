@@ -13,10 +13,10 @@ Ensure you have the following installed on your system:
  
 ## 2. Clone the Repository
  
-Clone the specific branch (`ldsc39`) from the CBIIT GitHub repository:
+Clone the main from the CBIIT GitHub repository:
  
 ```
-git clone -b ldsc39 https://github.com/CBIIT/ldsc.git
+git clone -b main https://github.com/CBIIT/ldsc.git
 cd ldsc
 ```
  
