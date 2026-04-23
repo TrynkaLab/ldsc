@@ -23,7 +23,14 @@ def make_annot_files(args, bed_for_annot):
     bimbed = BedTool(iter_bim)
     annotbed = bimbed.intersect(bed_for_annot)
     bp = [x.start + 1 for x in annotbed]
+
+    # In case the are multiallelic sites in the reference data the annotation can return
+    # 
     df_int = pd.DataFrame({'BP': bp, 'ANNOT': 1})
+
+    len_orig = len(df_int)
+    df_int = df_int.drop_duplicates(subset=['BP'])   # <-- add this
+    print(f"Before dropping duplicate positions: {len_orig}, after: {len(df_int}, difference: {len_orig-len(df_int}")
     df_annot = pd.merge(df_bim, df_int, how='left', on='BP')
     df_annot.fillna(0, inplace=True)
     df_annot = df_annot[['ANNOT']].astype(int)
