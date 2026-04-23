@@ -30,7 +30,7 @@ def make_annot_files(args, bed_for_annot):
 
     len_orig = len(df_int)
     df_int = df_int.drop_duplicates(subset=['BP'])   # <-- add this
-    print(f"Before dropping duplicate positions: {len_orig}, after: {len(df_int}, difference: {len_orig-len(df_int}")
+    print(f"Before dropping duplicate positions: {len_orig}, after: {len(df_int)}, difference: {len_orig-len(df_int)}")
     df_annot = pd.merge(df_bim, df_int, how='left', on='BP')
     df_annot.fillna(0, inplace=True)
     df_annot = df_annot[['ANNOT']].astype(int)
