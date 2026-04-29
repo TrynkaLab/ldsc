@@ -615,11 +615,25 @@ def munge_sumstats(args, p=True):
             if numk > 1:
                 raise ValueError('Found {num} columns named {C}'.format(C=field,num=str(numk)))
 
-            # check multiple different column names don't map to same data field
-            for head in cname_translation.values():
-                numc = list(cname_translation.values()).count(head)
+        # check multiple different column names don't map to same data field;
+        # when explicit column flags are provided, warn and keep only the flagged column
+        for head in set(cname_translation.values()):
+            numc = list(cname_translation.values()).count(head)
             if numc > 1:
-                    raise ValueError('Found {num} different {C} columns'.format(C=head,num=str(numc)))
+                flagged_cols = [col for col in list(cname_translation.keys())
+                               if clean_header(col) in flag_cnames and cname_translation[col] == head]
+                if flagged_cols:
+                    cols_to_remove = [col for col in list(cname_translation.keys())
+                                     if cname_translation[col] == head and col not in flagged_cols]
+                    for col in cols_to_remove:
+                        del cname_translation[col]
+                        del cname_description[col]
+                    log.log('WARNING: Found {num} different {C} columns; using {F} as specified by flag.'.format(
+                        C=head, num=str(numc), F=flagged_cols[0]))
+                else:
+                    raise ValueError('Found {num} different {C} columns'.format(C=head, num=str(numc)))
+
+        for field in cname_translation:
 
             if (not args.N) and (not (args.N_cas and args.N_con)) and ('N' not in cname_translation.values()) and\
                     (any(x not in cname_translation.values() for x in ['N_CAS', 'N_CON'])):
@@ -636,6 +650,9 @@ def munge_sumstats(args, p=True):
             log.log('Interpreting column names as follows:')
             log.log('\n'.join([x + ':\t' + cname_description[x]
                             for x in cname_description]) + '\n')
+            log.log('Final columns selected for munging:')
+            log.log('\n'.join(['  {} ({})'.format(col, cname_translation[col])
+                              for col in cname_translation]) + '\n')
 
             if args.merge_alleles:
                 log.log(

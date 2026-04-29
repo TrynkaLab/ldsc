@@ -1,3 +1,11 @@
+> This is a fork of the original repository implementing several small bugfixes to get it to run with the sc-blipper pipeline.
+
+
+# Implemented fixes
+- Fixed issue in make_annot.py when bedtools supplies duplicate variant positions resulting in .annot files of the wrong size
+- Fixed issue in ldsc with reading annotations resulting from scoping
+- Allowed duplicate mapping columns in munge_sumstats.py to allow it to read GWAS catalog sumstats directly in case they have hm_effect_allele and effect_allele columns. (Claude implemented, see prompts.md)
+
 # Installing LDSC (Python 3.9+ Branch)
  
 This guide covers the installation of the `ldsc39` branch from the CBIIT repository.

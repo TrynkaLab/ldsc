@@ -1,0 +1,3 @@
+
+
+> I would like to update munge_sumstats.py so that when flags for columns (--a1, --a2 --p etc) are provided the check arround line 622 for duplicate mapping columns is ignored, and just a warning is raised. This is because with some GWAS catalog sumstats there is an expectation of duplicate columns like hm_effect_allele and effect_allele, which currently triggers the error, eventough I specified --a1 hm_effect_allele to be used. I would also like to add an explicit print of the final selected columns being munged if that doesn't already exist
